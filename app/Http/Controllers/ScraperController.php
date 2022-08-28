@@ -14,36 +14,44 @@ class ScraperController extends Controller
     public function index()
     {
         $client = new Client();
-        $this->infoArray = [];
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
-        $crawler->filter('.titlelink')->each(function ($node) {
-            echo $node->text()."<br>";
-            $this->infoArray[0]['title'] = $node->text();
-        });
-        $crawler->filter('.subtext')->each(function ($node) {
-            echo $node->text()."<br>";
-            $this->infoArray[0]['desc'] = $node->text();
-        });
-        dump($this->infoArray[0]);
-        $link = $crawler->filter('.morelink')->link();
-        while($link) {
-            $crawler = $client->click($link);
+        do {
+            $crawler->filter('.rank')->each(function ($node) {
+                $this->infoArray['rank'][] = (int) $node->text();
+            });
             $crawler->filter('.titlelink')->each(function ($node) {
-                echo $node->text()."<br>";
-                $this->infoArray[$this->counter]['title'] = $node->text();
+                $this->infoArray['title'][] = $node->text();
             });
-            $crawler->filter('.subtext')->each(function ($node) {
-                echo $node->text()."<br>";
-                $this->infoArray[$this->counter]['desc'] = $node->text();
+            $crawler->filter('.titlelink')->each(function ($node) {
+                $this->infoArray['link'][] = $node->attr('href');
             });
+            $crawler->filter('.score')->each(function ($node) {
+                $this->infoArray['score'][] = $node->text();
+            }); 
+            $crawler->filter('.age')->each(function ($node) {
+                $this->infoArray['age'][] = $node->attr('title');
+            }); 
+            $crawler->filter('.athing')->each(function ($node) {
+                $this->infoArray['unique_id'][] = $node->attr('id');
+            }); 
+            dd($this->infoArray['rank']);
             try {
+                // Contrinue scraping to the next page
                 $link = $crawler->filter('.morelink')->link();
             } catch(Exception $ex) {
+                // Stop scraping on the last page
                 break;
             }
             // Sleep to prevent being timed out of the website
             sleep(2);
             $this->counter++;
-        }
+            $crawler = $client->click($link);
+        } while($link);
+        dump($this->infoArray['title']);
+        dump($this->infoArray['link']);
+        dump($this->infoArray['score']);
+        dump($this->infoArray['age']);
+        dump($this->infoArray['unique_id']);
+        dd($this->infoArray['rank']);
     }
 }
