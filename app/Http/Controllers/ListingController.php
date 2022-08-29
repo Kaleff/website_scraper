@@ -18,7 +18,6 @@ class ListingController extends Controller
     public function store()
     {
         // Initate scraping from the website
-        dd(0);
         $client = new Client();
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
         do {
@@ -76,6 +75,7 @@ class ListingController extends Controller
                 'created_at' => $this->infoArray['age'][$i]
             ];
         }
-        dd($this->queryArray);
+        Listing::insert($this->queryArray);
+        dd('News listings are successfully stored');
     }
 }
