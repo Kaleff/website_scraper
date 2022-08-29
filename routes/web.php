@@ -19,4 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/scrape', [ListingController::class, 'index']);
+Route::get('/listings', [ListingController::class, 'index']);
+
+Route::get('/listings/{page}',[ListingController::class, 'show']);

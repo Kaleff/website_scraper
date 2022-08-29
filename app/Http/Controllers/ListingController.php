@@ -19,7 +19,15 @@ class ListingController extends Controller
         Listing::insert($data);
         dd('News listings are successfully stored');
     }
-    public function index($page) {
+
+    public function index() {
+        $listings = Listing::orderBy('rank')
+                        ->take(10)
+                        ->get();
+        dd($listings);
+    }
+
+    public function show($page) {
         $listings = Listing::orderBy('rank')
                         ->take(10)
                         ->offset(10*($page-1))
