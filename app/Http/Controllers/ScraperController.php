@@ -11,30 +11,44 @@ class ScraperController extends Controller
     //
     protected $counter = 1;
     protected $infoArray = [];
+
+    private $queryArray = [];
     public function index()
     {
         $client = new Client();
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
         do {
+            // Scrape post ranks and convert to integer
             $crawler->filter('.rank')->each(function ($node) {
                 $this->infoArray['rank'][] = (int) $node->text();
             });
+            // Scrape post title
             $crawler->filter('.titlelink')->each(function ($node) {
                 $this->infoArray['title'][] = $node->text();
             });
+            // Scrape post link
             $crawler->filter('.titlelink')->each(function ($node) {
                 $this->infoArray['link'][] = $node->attr('href');
             });
-            $crawler->filter('.score')->each(function ($node) {
-                $this->infoArray['score'][] = $node->text();
+            // Scrape points and convert to integer
+            $crawler->filter('.subtext')->each(function ($node) {
+                $allText = $node->text();
+                // If the listing is an add (without points) the points are set to 0
+                if(strpos($allText, 'point') !== false) {  
+                    $this->infoArray['score'][] = (int) substr($allText, 0, strpos($allText, 'point'));
+                }
+                else {
+                    $this->infoArray['score'][] = 0;
+                }
             }); 
+            // Scrape timestamp
             $crawler->filter('.age')->each(function ($node) {
-                $this->infoArray['age'][] = $node->attr('title');
+                $this->infoArray['age'][] = str_replace('T', ' ', $node->attr('title'));
             }); 
+            // Scrape unique id and convert to integer
             $crawler->filter('.athing')->each(function ($node) {
-                $this->infoArray['unique_id'][] = $node->attr('id');
+                $this->infoArray['id'][] = (int) $node->attr('id');
             }); 
-            dd($this->infoArray['rank']);
             try {
                 // Contrinue scraping to the next page
                 $link = $crawler->filter('.morelink')->link();
@@ -42,16 +56,22 @@ class ScraperController extends Controller
                 // Stop scraping on the last page
                 break;
             }
-            // Sleep to prevent being timed out of the website
-            sleep(2);
+            // Sleep to prevent being timed out of the website with random intervals
+            sleep(rand(3, 15));
             $this->counter++;
             $crawler = $client->click($link);
         } while($link);
-        dump($this->infoArray['title']);
-        dump($this->infoArray['link']);
-        dump($this->infoArray['score']);
-        dump($this->infoArray['age']);
-        dump($this->infoArray['unique_id']);
-        dd($this->infoArray['rank']);
+        // Re
+        for($i=0; $i < count($this->infoArray['id']); $i++) {
+            $this->queryArray[] = [
+                'id' => $this->infoArray['id'][$i],
+                'rank' => $this->infoArray['rank'][$i],
+                'title' => $this->infoArray['title'][$i],
+                'link' => $this->infoArray['link'][$i],
+                'score' => $this->infoArray['score'][$i],
+                'timestamp' => $this->infoArray['age'][$i]
+            ];
+        }
+        dd($this->queryArray);
     }
 }
