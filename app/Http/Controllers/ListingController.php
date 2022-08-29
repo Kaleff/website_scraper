@@ -6,13 +6,14 @@ use Exception;
 use Illuminate\Http\Request;
 use Goutte\Client;
 
-class ScraperController extends Controller
+class ListingController extends Controller
 {
-    //
+    // Create empty variables
     protected $counter = 1;
     protected $infoArray = [];
 
     private $queryArray = [];
+
     public function store()
     {
         $client = new Client();
