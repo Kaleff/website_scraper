@@ -19,4 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/scrape', [ListingController::class, 'store']);
+Route::get('/scrape', [ListingController::class, 'index']);
