@@ -9,44 +9,48 @@ use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
+    // Create empty variables
+    protected $counter = 1;
+    protected $infoArray = [];
+
+    private $queryArray = [];
     // Scrape data from website
-    public static function store()
+    public function store()
     {
-        $infoArray = [];
-        $queryArray = [];
         // Initate scraping from the website
+        dd(0);
         $client = new Client();
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
         do {
             // Scrape post ranks and convert to integer
             $crawler->filter('.rank')->each(function ($node) {
-                $infoArray['rank'][] = (int) $node->text();
+                $this->infoArray['rank'][] = (int) $node->text();
             });
             // Scrape post title
             $crawler->filter('.titlelink')->each(function ($node) {
-                $infoArray['title'][] = $node->text();
+                $this->infoArray['title'][] = $node->text();
             });
             // Scrape post link
             $crawler->filter('.titlelink')->each(function ($node) {
-                $infoArray['link'][] = $node->attr('href');
+                $this->infoArray['link'][] = $node->attr('href');
             });
             // Scrape points and convert to integer
             $crawler->filter('.subtext')->each(function ($node) {
                 $allText = $node->text();
                 // If the listing is an add (without points) the points are set to 0
                 if (strpos($allText, 'point') !== false) {
-                    $infoArray['score'][] = (int) substr($allText, 0, strpos($allText, 'point'));
+                    $this->infoArray['score'][] = (int) substr($allText, 0, strpos($allText, 'point'));
                 } else {
-                    $infoArray['score'][] = 0;
+                    $this->infoArray['score'][] = 0;
                 }
             });
             // Scrape timestamp
             $crawler->filter('.age')->each(function ($node) {
-                $infoArray['age'][] = str_replace('T', ' ', $node->attr('title'));
+                $this->infoArray['age'][] = str_replace('T', ' ', $node->attr('title'));
             });
             // Scrape unique id and convert to integer
             $crawler->filter('.athing')->each(function ($node) {
-                $infoArray['id'][] = (int) $node->attr('id');
+                $this->infoArray['id'][] = (int) $node->attr('id');
             });
             try {
                 // Contrinue scraping to the next page
@@ -58,20 +62,20 @@ class ListingController extends Controller
             // Sleep to prevent being timed out of the website with random intervals
             sleep(rand(3, 15));
             // Transition to the next page
+            $this->counter++;
             $crawler = $client->click($link);
         } while ($link);
         // Store the data
-        for ($i = 0; $i < count($infoArray['id']); $i++) {
-            $queryArray[] = [
-                'id' => $infoArray['id'][$i],
-                'rank' => $infoArray['rank'][$i],
-                'title' => $infoArray['title'][$i],
-                'link' => $infoArray['link'][$i],
-                'score' => $infoArray['score'][$i],
-                'created_at' => $infoArray['age'][$i]
+        for ($i = 0; $i < count($this->infoArray['id']); $i++) {
+            $this->queryArray[] = [
+                'id' => $this->infoArray['id'][$i],
+                'rank' => $this->infoArray['rank'][$i],
+                'title' => $this->infoArray['title'][$i],
+                'link' => $this->infoArray['link'][$i],
+                'score' => $this->infoArray['score'][$i],
+                'created_at' => $this->infoArray['age'][$i]
             ];
         }
-        Listing::createMany([$queryArray]);
-        dd("Data is scraped succesfully");
+        dd($this->queryArray);
     }
 }

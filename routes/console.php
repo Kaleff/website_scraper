@@ -20,5 +20,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('scrape', function () {
-    ListingController::store();
+    $listings = new ListingController;
+    $listings->store();
 })->purpose('Scrape data');
