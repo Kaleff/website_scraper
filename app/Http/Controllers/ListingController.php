@@ -13,9 +13,10 @@ class ListingController extends Controller
     protected $infoArray = [];
 
     private $queryArray = [];
-
+    // Scrape data from website
     public function store()
     {
+        // Initate scraping from the website
         $client = new Client();
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
         do {
@@ -62,7 +63,7 @@ class ListingController extends Controller
             $this->counter++;
             $crawler = $client->click($link);
         } while ($link);
-        // Re
+        // Store the data
         for ($i = 0; $i < count($this->infoArray['id']); $i++) {
             $this->queryArray[] = [
                 'id' => $this->infoArray['id'][$i],
