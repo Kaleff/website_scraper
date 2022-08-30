@@ -1,8 +1,5 @@
 @extends('layout')
 @section('content')
-    @foreach($listingsArray as $listing)
-        <div class="row">
-            <listing-table :listing='{{  json_encode($listing)  }}'/>
-        </div>
-    @endforeach
+    <listing-table :listings='{{ json_encode($listingsArray) }}'>
+    </listing-table>
 @endsection

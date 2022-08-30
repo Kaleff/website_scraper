@@ -21,6 +21,7 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('listing-table', require('./components/ListingTable.vue').default);
+Vue.component('listing-row', require('./components/ListingRow.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
