@@ -1,4 +1,4 @@
 @extends('layout')
 @section('content')
-<example-component></example-component>
+<listing-table/>
 @endsection

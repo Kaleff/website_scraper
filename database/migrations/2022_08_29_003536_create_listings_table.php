@@ -19,7 +19,7 @@ class CreateListingsTable extends Migration
             $table->string('title');
             $table->string('link');
             $table->integer('score');
-            $table->timestamps();
+            $table->dateTime('created_at');
         });
     }
 

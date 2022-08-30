@@ -59,7 +59,7 @@ trait ScrapeTrait {
                 break;
             }
             // Sleep to prevent being timed out of the website with random intervals
-            sleep(rand(3, 15));
+            sleep(rand(3, 6));
             // Transition to the next page
             $crawler = $client->click($link);
         } while ($link);
