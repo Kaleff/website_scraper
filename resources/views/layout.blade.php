@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script defer src="{{ asset('/js/app.js') }}"></script>
+        <script defer src="{{ mix('/js/app.js') }}"></script>
         <title>Laravel</title>
 
         <!-- Fonts -->

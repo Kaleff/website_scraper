@@ -1,14 +1,15 @@
 <template>
-    <div>
-        Re
-    </div>
+    <span>{{ listing.id }}</span>
 </template>
 
 <script>
-export default {
-    name: 'listing-table',
-    mounted() {
-        console.log('Component mounted');   
+    export default {
+        name: 'listing-table',
+        props: {
+            listing: Object
+        },
+        mounted() {
+            console.log(this.listing);
+        }
     }
-}
 </script>
