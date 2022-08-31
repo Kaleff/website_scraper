@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ListingController;
 
 
@@ -15,10 +16,13 @@ use App\Http\Controllers\ListingController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/listings', [ListingController::class, 'index']);
-
-Route::get('/listings/{page}', [ListingController::class, 'show'])->where(['page' => '[0-9]+']);
+// Main page and 1st listings page
+Route::get('/', [ListingController::class, 'index'])->middleware('auth');
+// Listings page
+Route::get('/listings/{page}', [ListingController::class, 'show'])->where(['page' => '[0-9]+'])->middleware('auth');
+// User login form
+Route::get('/login', [UserController::class, 'login'])->name('login');
+// User authentication
+Route::post('/users/auth', [UserController::class, 'authenticate']);
+// User logout
+Route::post('/logout', [UserController::class, 'logout']);

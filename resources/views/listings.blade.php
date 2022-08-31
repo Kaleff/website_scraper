@@ -10,7 +10,14 @@
         <button><a href='{{ url("listings/{$previouspage}") }}'>Previous page</a></button>
     @endif
     @if ($previouspage == 1)
-        <button><a href='{{ url("listings") }}'>Previous page</a></button>
+        <button><a href='{{ url("/") }}'>Previous page</a></button>
     @endif
     <button><a href='{{ url("listings/{$nextpage}") }}'>Next page</a></button>
+    <br>
+    <form method="POST" action="{{ url('/logout') }}">
+        @csrf
+        <button type="submit">
+            Log out
+        </button>
+    </form>
 @endsection

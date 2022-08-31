@@ -18,6 +18,6 @@ Known issues:
 What I would have done if I had more time and resources for this task:
 1) More error handling for more cases.
 2) I would've written more elaborate and syntax-correct comments for the code.
-3) I would've implemented Register/Logout/Email confirmation functionality, if that would be a part of the task.
+3) I would've implemented Register/Email confirmation functionality, if that would be a part of the task.
 But I've only implemented just the Login to satisfy the requirements.
 4) More complex css styling

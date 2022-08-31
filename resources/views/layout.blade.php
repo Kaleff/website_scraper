@@ -27,6 +27,9 @@
                 width: 100%;
                 border-collapse: collapse;
             }
+            button {
+                margin: 5px;
+            }
 
         </style>
     </head>
