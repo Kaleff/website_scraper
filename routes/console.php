@@ -24,7 +24,7 @@ Artisan::command('scrape', function () {
     $listings->store();
 })->purpose('Scrape data');
 
-Artisan::command('update {page}', function () {
+Artisan::command('updatelist {page}', function () {
     // Output error message in case of invalid argument
     $page = (int) $this->argument('page');
     if ($page < 1) {
