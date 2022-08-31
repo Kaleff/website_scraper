@@ -23,3 +23,13 @@ Artisan::command('scrape', function () {
     $listings = new ListingController;
     $listings->store();
 })->purpose('Scrape data');
+
+Artisan::command('update {page}', function () {
+    // Output error message in case of invalid argument
+    $page = (int) $this->argument('page');
+    if ($page < 1) {
+        dd('Invalid argument, please input valid page number');
+    }
+    $listings = new ListingController;
+    $listings->update($page);
+})->purpose('Update points on the desired page');

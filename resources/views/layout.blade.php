@@ -18,7 +18,16 @@
         <style>
             body {
                 font-family: 'Nunito', sans-serif;
+                font-size: 20px;
             }
+            table, td, th {
+                border: 1px solid;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
         </style>
     </head>
     <body class="antialiased">

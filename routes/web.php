@@ -21,4 +21,4 @@ Route::get('/', function () {
 
 Route::get('/listings', [ListingController::class, 'index']);
 
-Route::get('/listings/{page}',[ListingController::class, 'show']);
+Route::get('/listings/{page}', [ListingController::class, 'show'])->where(['page' => '[0-9]+']);

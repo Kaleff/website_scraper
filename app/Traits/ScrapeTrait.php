@@ -6,7 +6,8 @@ use Exception;
 use Goutte\Client;
 use Illuminate\Http\Request;
 
-trait ScrapeTrait {
+trait ScrapeTrait
+{
 
     /**
      * @return array
@@ -16,7 +17,8 @@ trait ScrapeTrait {
     protected $infoArray = [];
 
     private $queryArray = [];
-    public function scrapeData() {
+    public function scrapeData()
+    {
         // Initate scraping from the website
         $client = new Client();
         $crawler = $client->request('GET', 'https://news.ycombinator.com/');
@@ -74,6 +76,6 @@ trait ScrapeTrait {
                 'created_at' => $this->infoArray['age'][$i]
             ];
         }
-        return($this->queryArray);
+        return ($this->queryArray);
     }
 }
