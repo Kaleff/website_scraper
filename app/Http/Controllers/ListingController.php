@@ -70,4 +70,11 @@ class ListingController extends Controller
             ->get();
         return view('listings', ['listingsArray' => $listings, 'page' => $page]);
     }
+    
+    // Delete the listing and return to the homepage
+    public function delete($id)
+    {
+        Listing::destroy($id);
+        return redirect('/')->with('message', 'Listing deleted!');
+    }
 }
