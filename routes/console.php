@@ -19,17 +19,15 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('scrape', function () {
-    $listings = new ListingController;
+Artisan::command('scrape', function (ListingController $listings) {
     $listings->store();
 })->purpose('Scrape data');
 
-Artisan::command('updatelist {page}', function () {
+Artisan::command('updatelist {page}', function (ListingController $listings) {
     // Output error message in case of invalid argument
     $page = (int) $this->argument('page');
     if ($page < 1) {
         dd('Invalid argument, please input valid page number');
     }
-    $listings = new ListingController;
     $listings->update($page);
 })->purpose('Update points on the desired page');
